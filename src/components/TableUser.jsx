@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import { useGetAllUserQuery } from '../services/userApi';
-import { useSelector } from 'react-redux';
-import { selectAllUsers } from '../features/users/usersSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers, selectAllUsers } from '../features/users/usersSlice';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 
@@ -50,21 +50,45 @@ const columns = [
 ];
 
 
-const paginationModel = { page: 0, pageSize: 5 };
+
+
 
 export default function DataTable() {
-  const { isLoading, isError } = useGetAllUserQuery({ skip: 0, limit: 20, select: 'id,firstName,lastName,image,age,role' });
+
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  });
+  const { page, pageSize } = paginationModel;
+
+
+  const dispatch = useDispatch();
   const rows = useSelector(selectAllUsers);
-  console.log(rows)
+  const loading = useSelector((state) => state.users.loading);
+  const error = useSelector((state) => state.users.error);
+  const total = useSelector((state) => state.users.total);
+
+  useEffect(() => {
+    dispatch(fetchUsers({
+      limit: pageSize, skip: page * pageSize, select: 'id,image,firstName,lastName,age,role'
+    }));
+  }, [dispatch, page, pageSize]);
+
+  
   return (
     <Paper sx={{ height: '100%', width: 'fit-content' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        initialState={{ pagination: { paginationModel } }}
+        pagination={true}
+        paginationMode="server"
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        rowCount={total ?? 0}
         pageSizeOptions={[5, 10]}
         checkboxSelection
         sx={{ border: 0 }}
+        loading={loading}
       />
     </Paper>
   );

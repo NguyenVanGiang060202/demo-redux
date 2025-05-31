@@ -6,10 +6,6 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import TableUser from './components/TableUser';
 import { useState } from 'react';
-import { useGetAllUserQuery } from './services/userApi';
-import { useSelector } from 'react-redux';
-import { selectAllUsers } from './features/users/usersSlice';
-
 
 
 function App() {
