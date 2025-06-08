@@ -1,9 +1,10 @@
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers, selectAllUsers } from '../features/users/usersSlice';
+import { fetchUsers, selectAllUsers } from '../../features/users/usersSlice';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import Header from '../components/Header';
 
 
 
@@ -26,8 +27,8 @@ const columns = [
       />
     ),
   },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
+  { field: 'firstName', headerName: 'First name', width: 200 },
+  { field: 'lastName', headerName: 'Last name', width: 200 },
   {
     field: 'age',
     headerName: 'Age',
@@ -39,13 +40,13 @@ const columns = [
     headerName: 'Full name',
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
-    width: 160,
+    width: 300,
     valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
   },
   {
     field: 'role',
     headerName: 'Role',
-    width: 130,
+    width: 100,
   }
 ];
 
@@ -53,7 +54,7 @@ const columns = [
 
 
 
-export default function DataTable() {
+export default function TableUser() {
 
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
@@ -74,22 +75,25 @@ export default function DataTable() {
     }));
   }, [dispatch, page, pageSize]);
 
-  
+
   return (
-    <Paper sx={{ height: '100%', width: 'fit-content' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pagination={true}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        onPaginationModelChange={setPaginationModel}
-        rowCount={total ?? 0}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
-        loading={loading}
-      />
-    </Paper>
+    <div className="w-dvw h-dvh flex justify-center items-start pb-4 bg-sky-50 p-24 overflow-hidden flex-col">
+      <Header/>
+      <Paper sx={{ height: '100%', width: '100%', }} className='!rounded-lg !shadow-md '>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pagination={true}
+          paginationMode="server"
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          rowCount={total ?? 0}
+          pageSizeOptions={[5, 10]}
+          checkboxSelection
+          sx={{ border: 0, height: '100%', width: '100%' }}
+          loading={loading}
+        />
+      </Paper>
+    </div>
   );
 }
