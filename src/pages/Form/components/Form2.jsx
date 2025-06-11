@@ -5,11 +5,12 @@ export default function Form2() {
     const { register, formState: { errors } } = useFormContext();
     return (
         <>
-            <div className="grid grid-rows-4 w-full h-full gap-y-4">
+            <div className="grid grid-rows-4 w-full h-full gap-y-2">
                 <div className="flex justify-center items-center w-full h-full space-x-8">
                     <div className="flex flex-col w-full h-full justify-start items-start">
-                        <p className='font-medium text-xl '>Họ và tên</p>
+                        <p className='font-medium text-xl'>Họ và tên <span className='!text-red-500'>*</span></p>
                         <TextField
+                            size='small'
                             placeholder='Họ và tên'
                             name="fullname"
                             error={!!errors.fullname}
@@ -33,6 +34,7 @@ export default function Form2() {
                     <FormControl className='w-full h-full flex justify-start items-start'>
                         <p className='font-medium text-xl '>Cách xưng hô phù hợp với bạn?</p>
                         <Select
+                            size='small'
                             name="gender"
                             {...register('gender')}
                             defaultValue="Anh"
@@ -54,10 +56,11 @@ export default function Form2() {
                 </div>
                 <div className="flex justify-center items-center w-full h-full space-x-8">
                     <div className='flex flex-col w-full h-full justify-start items-start'>
-                        <p className='font-medium text-xl '>Email</p>
+                        <p className='font-medium text-xl '>Email <span className='!text-red-500'>*</span></p>
                         <TextField
                             name="email"
                             type="email"
+                            size='small'
                             error={!!errors.email}
                             helperText={errors.email?.message}
                             placeholder='example@gmail.com'
@@ -73,10 +76,11 @@ export default function Form2() {
                         />
                     </div>
                     <div className="flex flex-col w-full h-full justify-start items-start">
-                        <p className='font-medium text-xl '>Số diện thoại</p>
+                        <p className='font-medium text-xl '>Số diện thoại <span className='!text-red-500'>*</span></p>
                         <TextField
                             name="phonenumber"
                             type="tel"
+                            size='small'
                             error={!!errors.phonenumber}
                             helperText={errors.phonenumber?.message}
                             placeholder='0123456789'
@@ -93,12 +97,13 @@ export default function Form2() {
                     </div>
                 </div>
                 <div className="flex flex-col w-full h-full justify-start items-start">
-                    <p className='font-medium text-xl '>Linkedln của anh/chị</p>
+                    <p className='font-medium text-xl '>Linkedln của anh/chị <span className='!text-red-500'>*</span></p>
                     <TextField
                         name="linkedln"
                         type="text"
                         error={!!errors.linkedln}
                         helperText={errors.linkedln?.message}
+                        size='small'
                         placeholder='https://www.linkedin.com/'
                         {...register('linkedln', { required: true })}
                         className='w-full border-none'
@@ -112,13 +117,14 @@ export default function Form2() {
                     />
                 </div>
                 <div className="flex flex-col w-full h-full justify-start items-start">
-                    <p className='font-medium text-xl '>Social media mà anh/chị thường sử dụng (facebook, instagram, twitter,...) </p>
+                    <p className='font-medium text-xl '>Social media mà anh/chị thường sử dụng (facebook, instagram, twitter,...) <span className='!text-red-500'>*</span></p>
                     <TextField
                         name="social"
                         type="text"
                         error={!!errors.social}
                         helperText={errors.social?.message}
                         placeholder='https://www.facebook.com/'
+                        size='small'
                         {...register('social', { required: true })}
                         className='w-full border-none'
                         required

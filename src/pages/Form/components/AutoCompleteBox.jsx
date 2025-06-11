@@ -209,7 +209,7 @@ export function Autocomplete({
     return (
         <div className='w-full'>
             <div {...getRootProps()} className='w-full space-y-4'>
-                <h6 className='font-bold text-lg'>{label}</h6>
+                <h6 className='font-bold text-lg'>{label} <span className='!text-red-500'>*</span></h6>
                 <InputWrapper 
                     ref={handleSetAnchorEl} 
                     className={`${focused ? 'focused' : ''} ${error ? 'error' : ''} !w-full !p-3 !gap-2 !`}

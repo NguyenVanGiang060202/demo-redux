@@ -6,7 +6,7 @@ import ChangeStageButton from './ChangeStageButton';
 import Form1 from './Form1';
 import SimpleAutocomplete from './Form3';
 import { yupResolver } from '@hookform/resolvers/yup'
-import { fullSchema } from './schema'
+import { fullSchema } from '../../../schema/schemaRegUser'
 import Steppers from './Stepper'
 import ShowInfoUpload from './ShowInfoUpload';
 
@@ -34,7 +34,7 @@ export default function StageForm() {
 
 
     return (
-        <div className='flex flex-col justify-center items-center w-full h-full space-y-10'>
+        <div className='flex flex-col justify-center items-center w-full h-full space-y-4'>
             <FormProvider {...methods}>
                 {!methods.formState.isSubmitSuccessful &&
                     <>

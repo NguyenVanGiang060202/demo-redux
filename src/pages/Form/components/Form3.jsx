@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import AutocompleteBox from './AutoCompleteBox'
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
-import { menteeTarget, shareContent, expertise } from './schema';
+import { menteeTarget, shareContent, expertise } from '../../../schema/schemaRegUser';
 import { Button, styled, TextField, Typography } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ShowUpload from './ShowUpload';
@@ -53,7 +53,7 @@ export default function Form3() {
 						<div className='w-full h-full flex flex-col space-y-4'>
 							<div className="w-full flex space-x-4">
 								<div className='flex items-start flex-col w-full space-y-4'>
-									<h6 className='font-bold text-lg'>Số năm kinh nghiệm</h6>
+									<h6 className='font-bold text-lg'>Số năm kinh nghiệm <span className='!text-red-500'>*</span></h6>
 									<Controller
 										name="experience"
 										control={control}
