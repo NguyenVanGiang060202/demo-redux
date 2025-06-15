@@ -35,12 +35,18 @@ export const expertise = [
     "Kỹ thuật phần mềm"
 ]
 
-export const fullSchema = yup.object({
+export const SchemaRole = yup.object({
     role: yup
         .string()
         .required('Vai trò là bắt buộc')
         .oneOf(['mentor', 'educator']),
 
+});
+
+export const MAX_FILE_COUNT = 6;
+
+
+export const SchemaInfoExpert = yup.object({
     fullname: yup
         .string()
         .required('Họ và tên là bắt buộc')
@@ -69,30 +75,23 @@ export const fullSchema = yup.object({
         .string()
         .required('Link mạng xã hội là bắt buộc')
         .url('Link mạng xã hội không hợp lệ'),
+})
+
+export const SchemaMentorEducationDetails = yup.object({
+    menteeTarget: yup.array()
+        .min(1, 'Vui lòng chọn ít nhất 1 đối tượng')
+        .of(
+            yup.string().oneOf(menteeTarget, 'Giá trị không hợp lệ')
+        )
+        .required('Vui lòng chọn ít nhất 1 đối tượng'),
 
 
-    menteeTarget: yup.array().when('role', {
-        is: 'mentor',
-        then: (schema) =>
-            schema
-                .min(1, 'Vui lòng chọn ít nhất 1 đối tượng')
-                .of(
-                    yup.string().oneOf(menteeTarget, 'Giá trị không hợp lệ')
-                )
-                .required('Vui lòng chọn ít nhất 1 đối tượng'),
-        otherwise: (schema) => schema.notRequired(),
-    }),
-    shareContent: yup.array().when('role', {
-        is: 'mentor',
-        then: (schema) =>
-            schema
-                .min(1, 'Vui lòng chọn ít nhất 1 nội dung')
-                .of(
-                    yup.string().oneOf(shareContent, 'Giá trị không hợp lệ')
-                )
-                .required('Vui lòng chọn ít nhất 1 nội dung'),
-        otherwise: (schema) => schema.notRequired(),
-    }),
+    shareContent: yup.array()
+        .min(1, 'Vui lòng chọn ít nhất 1 nội dung')
+        .of(
+            yup.string().oneOf(shareContent, 'Giá trị không hợp lệ')
+        )
+        .required('Vui lòng chọn ít nhất 1 nội dung'),
 
     experience: yup.number().when('role', {
         is: 'educator',
@@ -115,21 +114,21 @@ export const fullSchema = yup.object({
         otherwise: (schema) => schema.notRequired(),
     }),
 
-    resume: yup
-        .mixed()
+    certificate: yup
+        .array()
         .when('role', {
             is: 'educator',
             then: (schema) =>
                 schema
-                    .required('Vui lòng đăng tải chứng chỉ'),
+                    .of(
+                        yup
+                            .mixed()
+                            .test('fileFormat', 'Định dạng không hợp lệ', (file) => !file || file.type.startsWith('image/') || file.type === 'application/pdf')
+                    )
+                    .min(1, 'Phải chọn ít nhất 1 file')
+                    .max(MAX_FILE_COUNT, `Tối đa ${MAX_FILE_COUNT} file`),
             otherwise: (schema) => schema.notRequired(),
         }),
-    // .test("fileSize", "File quá lớn", (value) => {
-    //     return value && value.size <= 5 * 1024 * 1024; // tối đa 5MB
-    // })
-    // .test("fileType", "Chỉ chấp nhận PDF hoặc", (value) => {
-    //     return value && (value.type === "application/pdf ");
-    // }),
 
-});
 
+})

@@ -1,7 +1,7 @@
 import { FormControl, MenuItem, Select, TextField } from '@mui/material'
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-export default function Form2() {
+export default function InforExpertForm() {
     const { register, formState: { errors } } = useFormContext();
     return (
         <>
@@ -21,12 +21,6 @@ export default function Form2() {
                                 '& .MuiOutlinedInput-notchedOutline':
                                 {
                                     borderRadius: '0.5rem',
-                                },
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'indigo',    // viền khi hover
-                                },
-                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: 'indigo',       // viền khi focus
                                 },
                             }}
                         />
@@ -81,6 +75,7 @@ export default function Form2() {
                             name="phonenumber"
                             type="tel"
                             size='small'
+                            pattern="^[0-9-+\s()]*$"
                             error={!!errors.phonenumber}
                             helperText={errors.phonenumber?.message}
                             placeholder='0123456789'
@@ -93,6 +88,11 @@ export default function Form2() {
                                     borderRadius: '0.5rem',
                                 },
                             }}
+                            onKeyDown={(e) => {
+                                if (!['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Backspace', 'Delete'].includes(e.key)) {
+                                    e.preventDefault();
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -100,7 +100,7 @@ export default function Form2() {
                     <p className='font-medium text-xl '>Linkedln của anh/chị <span className='!text-red-500'>*</span></p>
                     <TextField
                         name="linkedln"
-                        type="text"
+                        type="url"
                         error={!!errors.linkedln}
                         helperText={errors.linkedln?.message}
                         size='small'
@@ -120,7 +120,7 @@ export default function Form2() {
                     <p className='font-medium text-xl '>Social media mà anh/chị thường sử dụng (facebook, instagram, twitter,...) <span className='!text-red-500'>*</span></p>
                     <TextField
                         name="social"
-                        type="text"
+                        type="url"
                         error={!!errors.social}
                         helperText={errors.social?.message}
                         placeholder='https://www.facebook.com/'

@@ -1,45 +1,71 @@
 import { Box, Button } from '@mui/material'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useDispatch, useSelector } from 'react-redux';
-import { nextStage, prevStage, setStageValid } from '../../../features/stageform/stageformSlice';
+
 import { useFormContext } from 'react-hook-form';
-import { useCheckValidStage } from '../../../hook/useCheckValidStage';
+
 import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 
 
 
 
 
-export default function ChangeStageButton() {
-    const { stage, labels, isStageValid } = useSelector((state) => state.stageform)
-    const dispatch = useDispatch()
+export default function ChangeStageButton({ stage, setStage, labels, isStageValid, setIsStageValid }) {
 
-    const { handleSubmit, formState: {isValid, errors} } = useFormContext()
+    const { handleSubmit, getValues, formState: { isValid, errors } } = useFormContext()
 
-    useCheckValidStage(stage);
-
-    useEffect(()=>{
-        console.log("Form total isValid: ", isValid)
-        console.log(`Form stage ${stage} isValid: `, isStageValid[stage])
+    useEffect(() => {
+        const newValid = [...isStageValid];
+        newValid[stage] = isValid;
+        setIsStageValid(newValid)
+        console.log("error from button: ", errors)
     }, [isValid])
 
+
+    
+
+
+
     const handleNext = () => {
-        if(isStageValid[stage]){
-            dispatch(nextStage())
+        if (isStageValid[stage]) {
+            if (stage < labels.length - 1) {
+                setStage(stage + 1)
+            }
         }
     };
 
 
     const handleBack = () => {
-        dispatch(prevStage())
+        if (stage > 0) {
+            setStage(stage - 1)
+        }
     };
 
     const onSubmit = (data) => {
-        console.log(errors)
-        console.log("Submitted from SubmitButton", data);
+        if (isValid) {
+            console.log("Form values: ", getValues())
+            console.log("Form errors: ", errors)
+            console.log("Form total isValid: ", isValid)
+            console.log("Form submitted data: ", data)
+        }
     };
+
+    const keyHandler = useCallback((e) => {
+        if (e.key === 'Enter') {
+            if (stage === labels.length - 1) {
+                handleSubmit(onSubmit)();
+            } else {
+                handleNext();
+            }
+        }
+    }, [stage, labels.length, handleNext, handleSubmit, onSubmit]);
+
+    useEffect(() => {
+        document.addEventListener('keydown', keyHandler);
+        return () => document.removeEventListener('keydown', keyHandler);
+    }, [keyHandler]);
 
 
     return (
@@ -57,7 +83,7 @@ export default function ChangeStageButton() {
                     ? <Button
                         variant="contained"
                         onClick={handleSubmit(onSubmit)}
-                        disabled={!isStageValid[stage]}
+                        disabled={!isStageValid[stage] || !isValid}
                         sx={{
                             mt: 1, mr: 1, font: 'bold', fontWeight: 700,
                             '&.Mui-disabled': {

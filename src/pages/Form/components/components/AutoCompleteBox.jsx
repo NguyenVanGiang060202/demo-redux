@@ -18,6 +18,8 @@ const Root = styled('div')(({ theme }) => ({
 
 const InputWrapper = styled('div')(({ theme }) => ({
     width: '300px',
+    maxHeight: '80px',
+    overflowX: 'auto',
     border: '1px solid #d9d9d9',
     backgroundColor: '#fff',
     borderRadius: '4px',
@@ -73,7 +75,7 @@ const InputWrapper = styled('div')(({ theme }) => ({
 function Tag(props) {
     const { label, onDelete, ...other } = props;
     return (
-        <div {...other} className='w-fit bg-slate-200 p-1 rounded-md space-x-1 flex items-center'>
+        <div {...other} className='w-fit bg-slate-200 p-1 px-2 rounded-2xl space-x-1 flex items-center'>
             <span>{label}</span>
             <CloseIcon onClick={onDelete} fontSize="small" className="cursor-pointer" />
         </div>
@@ -208,15 +210,15 @@ export function Autocomplete({
 
     return (
         <div className='w-full'>
-            <div {...getRootProps()} className='w-full space-y-4'>
+            <div {...getRootProps()} className='w-full space-y-2'>
                 <h6 className='font-bold text-lg'>{label} <span className='!text-red-500'>*</span></h6>
                 <InputWrapper 
                     ref={handleSetAnchorEl} 
-                    className={`${focused ? 'focused' : ''} ${error ? 'error' : ''} !w-full !p-3 !gap-2 !`}
+                    className={`${focused ? 'focused' : ''} ${error ? 'error' : ''} !w-full !p-1 !gap-1 `}
                 >
                     {autocompleteValue.map((option, index) => {
                         const { key, ...tagProps } = getTagProps({ index });
-                        return <StyledTag key={key} {...tagProps} label={option} />;
+                        return <StyledTag className key={key} {...tagProps} label={option} />;
                     })}
                     <input {...getInputProps()} />
                 </InputWrapper>
