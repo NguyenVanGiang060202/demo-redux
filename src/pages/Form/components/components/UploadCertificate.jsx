@@ -36,7 +36,7 @@ const style = {
 
 
 export default function UploadCertificate() {
-    const { control, setValue } = useFormContext();
+    const { control, setValue, formState: { errors } } = useFormContext();
     const certificate = useWatch({ control, name: 'certificate' })
     const [previews, setPreviews] = useState([]);
     const [active, setActive] = useState(0);
@@ -75,7 +75,9 @@ export default function UploadCertificate() {
         URL.revokeObjectURL(previews[indexToDelete].previewUrl);
         setPreviews(prev => prev.filter((_, index) => index !== indexToDelete));
         const updatedFiles = Array.from(certificate).filter((_, index) => index !== indexToDelete);
-        setValue('certificate', updatedFiles.length > 0 ? updatedFiles : null);
+        setValue('certificate', updatedFiles.length > 0 ? updatedFiles : null, {
+            shouldValidate: true,
+          });
     }
     return (
         <>
@@ -118,10 +120,11 @@ export default function UploadCertificate() {
                                 )}
                             />
                         </div>
+                        {errors.certificate && <FormHelperText error>{errors.certificate.message}</FormHelperText>}
 
                         <div className="w-full grid grid-cols-3 grid-rows-2 gap-2">
                             {previews.map((preview, index) => (
-                                <Card className='w-full h-44' key={index} sx={{ borderRadius: '8px' }}>
+                                <Card className='w-full h-44 cursor-pointer' key={index} sx={{ borderRadius: '8px' }}>
                                     {preview.file.type.startsWith("image/") && (
                                         <div className="relative w-full h-full flex justify-center items-center">
                                             <img
