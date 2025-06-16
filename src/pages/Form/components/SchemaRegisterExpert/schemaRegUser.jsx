@@ -126,7 +126,8 @@ export const SchemaMentorEducationDetails = yup.object({
                             .test('fileFormat', 'Định dạng không hợp lệ', (file) => !file || file.type.startsWith('image/') || file.type === 'application/pdf')
                     )
                     .min(1, 'Phải chọn ít nhất 1 file')
-                    .max(MAX_FILE_COUNT, `Tối đa ${MAX_FILE_COUNT} file`),
+                    .max(MAX_FILE_COUNT, `Tối đa ${MAX_FILE_COUNT} file`)
+                    .required('Vui lòng chọn ít nhất 1 file'),
             otherwise: (schema) => schema.notRequired(),
         }),
 
