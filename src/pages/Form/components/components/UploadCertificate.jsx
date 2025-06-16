@@ -1,6 +1,5 @@
 import { Box, Button, Card, FormHelperText, Modal, Typography } from '@mui/material';
-import React from 'react'
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react'
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { IconButton } from '@mui/material';
@@ -54,7 +53,7 @@ export default function UploadCertificate() {
     function handleOnChange(event, field) {
         const files = Array.from(event.target.files);
         if (previews.length + files.length <= MAX_FILE_COUNT) {
-            field.onChange(files);
+            field.onChange([...certificate, ...files]);
         } else {
             alert(`Bạn chỉ được tải lên tối đa ${MAX_FILE_COUNT} file`);
             return;
@@ -75,10 +74,19 @@ export default function UploadCertificate() {
         URL.revokeObjectURL(previews[indexToDelete].previewUrl);
         setPreviews(prev => prev.filter((_, index) => index !== indexToDelete));
         const updatedFiles = Array.from(certificate).filter((_, index) => index !== indexToDelete);
-        setValue('certificate', updatedFiles.length > 0 ? updatedFiles : null, {
-            shouldValidate: true,
-          });
+        // setValue('certificate', updatedFiles.length > 0 ? updatedFiles : [], {
+        //     shouldValidate: true,
+        //   });
     }
+
+    useEffect(() => {
+        const updatedFiles = previews.map(p => p.file)
+        setValue('certificate', updatedFiles.length > 0 ? updatedFiles : [], {
+            shouldValidate: true,
+        });
+    }, [previews])
+
+
     return (
         <>
             <Modal

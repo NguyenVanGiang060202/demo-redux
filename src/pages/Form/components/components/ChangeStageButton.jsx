@@ -24,7 +24,7 @@ export default function ChangeStageButton({ stage, setStage, labels, isStageVali
     }, [isValid])
 
 
-    
+
 
 
 
@@ -45,10 +45,20 @@ export default function ChangeStageButton({ stage, setStage, labels, isStageVali
 
     const onSubmit = (data) => {
         if (isValid) {
-            console.log("Form values: ", getValues())
-            console.log("Form errors: ", errors)
-            console.log("Form total isValid: ", isValid)
-            console.log("Form submitted data: ", data)
+            if (data.role === "mentor") {
+                console.log("Form values: ", getValues())
+                console.log("Form errors: ", errors)
+                console.log("Form total isValid: ", isValid)
+                console.log("Form submitted data: ", data)
+                const { certificate, ...rest } = data;
+                console.log("form remove certificate:", rest)
+            }
+            else{
+                console.log("Form values: ", getValues())
+                console.log("Form errors: ", errors)
+                console.log("Form total isValid: ", isValid)
+                console.log("Form submitted data: ", data)
+            }
         }
     };
 
